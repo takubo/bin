@@ -1,0 +1,33 @@
+#!/bin/awk -f
+BEGIN {
+	ssid[1] = "A"
+	key [1] = "x"
+	ssid[2] = "B"
+	key [2] = "y"
+	ssid[3] = "8"
+	key [3] = "z"
+	ssid[4] = "9"
+	key [4] = "w"
+
+	for (i = 1; i <= length(ssid); i++) print i ") " ssid[i]
+	printf "\nselect> "
+
+	getline
+
+	if ($0 !~  "^[1-" length(ssid) "]$") {
+		print "illegal input."
+		exit 1
+	}
+
+	print("iwcofig ssid " ssid[$0] " key " key[$0])
+exit
+	### RedHat
+	# dhclient -r	#release IP address
+	system("dhclient")
+	
+	
+	### Vine
+	# dhcpcd -k	#release IP address
+	#dhcpcd -n -H eth0
+	system("dhcpcd")
+}

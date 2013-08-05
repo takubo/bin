@@ -1,0 +1,35 @@
+#!/bin/sh
+
+ext_dsp="VGA"
+
+resolution=$1
+case "$resolution" in
+	xga | "")
+		height=1024
+		width=768
+		;;
+	svga )
+		height=640
+		width=480
+		;;
+	wxga )
+		height=1366
+		width=768
+		;;
+	vga )
+		height=640
+		width=480
+		;;
+	*x* )
+		height=`echo ${resolution} | cut -dx -f1`
+		width=`echo ${resolution} | cut -dx -f2`
+		;;
+	* )
+		height=1024
+		width=768
+		;;
+esac
+
+echo xrandr --output LVDS         --mode "${height}x${width}"
+#echo xrandr --output "${ext_dsp}" --mode "${height}x${width}" --auto
+echo xrandr --output "${ext_dsp}" --same-as LVDS --auto
