@@ -1,4 +1,11 @@
 #!/usr/bin/awk -f
+BEGIN {
+	if (ARGV[1] ~ /^-F/) {
+		sub(/^-F/, "", ARGV[1])
+		FS = ARGV[1]
+		ARGV[1] = ""
+	}
+}
 
 {
 	for (i = 1; i <= NF; i++)
@@ -6,7 +13,7 @@
 }
 
 END {
-	OFS = "\t"
+	OFS = (FS == " " ? "\t" : FS)
 	for (i = 1; i <= NF; i++) {
 		for (j = 1; j <= FNR; j++)
 			printf j == FNR ? "%s" : "%s%s", cell[j, i], OFS
