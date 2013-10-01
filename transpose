@@ -1,12 +1,4 @@
 #!/usr/bin/awk -f
-BEGIN {
-	if (ARGV[1] ~ /^-F/) {
-		sub(/^-F/, "", ARGV[1])
-		FS = ARGV[1]
-		ARGV[1] = ""
-	}
-}
-
 {
 	for (i = 1; i <= NF; i++)
 		cell[FNR, i] = $i
