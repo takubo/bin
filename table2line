@@ -13,7 +13,8 @@ FNR == 1{
 
 {
 	if (NF != col_num)
-		printf "Warnig: Irregular NF. FILENAME=\"%s\" FNR=%d\n", FILENAME, FNR
+		printf "Warnig: Irregular NF. FILENAME=\"%s\" FNR=%d\n",
+			FILENAME, FNR > "/dev/stderr"
 
 	for (i = 2; i <= NF; i++)
 		print $1, col_title[i], $i
