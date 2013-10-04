@@ -1,21 +1,20 @@
 #!/usr/bin/awk -f
 BEGIN {
-	if (ARGV[1] ~ /^-F/) {
-		sub(/^-F/, "", ARGV[1])
-		FS = ARGV[1]
-		ARGV[1] = ""
-	}
-
 	OFS = (FS == " " ? "\t" : FS)
 }
 
 FNR == 1{
 	for (i = 1; i <= NF; i++)
 		col_title[i] = $i
+
+	col_num = NF
 	next
 }
 
 {
+	if (NF != col_num)
+		printf "Warnig: Irregular NF. FILENAME=\"%s\" FNR=%d\n", FILENAME, FNR
+
 	for (i = 2; i <= NF; i++)
 		print $1, col_title[i], $i
 }
