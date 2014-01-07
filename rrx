@@ -1,0 +1,31 @@
+#!/usr/bin/awk -f
+
+function disp(lvl, str,    i)
+{
+	if (lvl > level) {
+		print str
+		return
+	}
+	for (i = 1; i <= dat_num[lvl]; i++)
+		disp(lvl + 1, str OFS dat[lvl, i])
+}
+
+BEGIN {
+	OFS = (FS == " " ? "\t" : FS)
+	#ORS = ""
+
+	RS = ""
+	FS = "\n"
+}
+
+{
+	level++
+	for (i = 1; i <= NF; i++)
+		dat[level, i] = $i
+	dat_num[level] = NF
+}
+
+END {
+	for (i = 1; i <= dat_num[1]; i++)
+		disp(1 + 1, dat[1, i])
+}
