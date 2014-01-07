@@ -20,9 +20,12 @@ BEGIN {
 
 {
 	level++
-	for (i = 1; i <= NF; i++)
-		dat[level, i] = $i
 	dat_num[level] = NF
+	for (i = 1; i <= NF; i++)
+		if ($i !~ ("^" ign))
+			dat_num[level]--
+		else
+			dat[level, i] = $i
 }
 
 END {
