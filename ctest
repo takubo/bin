@@ -3,10 +3,9 @@
 src=
 opt=
 
-if [ `uname -o` = "Cygwin" ] ; then exe_file=./a; else exe_file=./a.out; fi
+out_file=./a.out
 
 while [ "$1" != "" ] ; do
-	#echo $1
 	if [ ${1:0:1} = "-" ] ; then
 		opt="${opt}"\ "$1"
 	else
@@ -15,11 +14,8 @@ while [ "$1" != "" ] ; do
 	shift
 done
 
-#echo ^${opt}$
-#echo ^${src}$
-
 # eval expand ${opt}
-eval cc ${opt} -lm -xc <( cat << EOT
+eval cc ${opt} -lm -xc -o ${out_file} <( cat << EOT
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <math.h>
@@ -35,4 +31,4 @@ eval cc ${opt} -lm -xc <( cat << EOT
 		return 0;
 	}
 EOT
-) && ${exe_file} && rm ${exe_file}
+) && ${out_file} && rm ${out_file}
