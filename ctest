@@ -1,0 +1,36 @@
+#!/bin/zsh
+
+src=
+opt=
+
+while [ "$1" != "" ] ; do
+	#echo $1
+	if [ ${1:0:1} = "-" ] ; then
+		opt="${opt}"\ "$1"
+	else
+		src="${src}"\ "$1"
+	fi
+	shift
+done
+
+#echo ^${opt}$
+#echo ^${src}$
+
+# eval expand ${opt}
+eval cc ${opt} -lm -xc <( cat << EOT
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <math.h>
+
+	typedef unsigned char  uchar;
+	typedef unsigned short ushort;
+	typedef unsigned int   uint;
+	typedef unsigned long  ulong;
+
+	int main(int argc, const char *argv[])
+	{
+		${src};
+		return 0;
+	}
+EOT
+) && if [ `uname -o` = "Cygwin" ] ; then ./a; else ./a.out; fi
