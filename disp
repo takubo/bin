@@ -7,30 +7,17 @@ PAGER=less
 # 確認のため、当該コマンドを実行したプロンプトも見たいので、+1行。
 offset=3
 
-#row=`stty -a | sed -e 's/; \?/\
-    #/g;1q' | grep row | cut -d" " -f 2`
-#row=`stty -a < /dev/tty | sed -e 's/;//g;1q' | cut -d" " -f 5`
 row=`stty size < /dev/tty | cut -d" " -f 1`
-#echo row ${row}
 
 if [ "`LANG=C tty`" = "not a tty" ] ; then
-	#echo "not tty"
-	input="-"
-	#awk '{l[NR] = $0} END{cmd = NR < '${row}' ? "cat" : "'${PAGER}'";\
-	#    for(i = 1; i <= NR; i++)print l[i] | cmd}'
 	awk -v row=${row} -v pager=${PAGER} '
 	    {l[NR] = $0} END{cmd = NR < row ? "cat" : pager; \
 	    for(i = 1; i <= NR; i++)print l[i] | cmd}'
 elif [ "$#" = "0" ] ; then
-	#echo "cat"
 	cat
 else
-	#echo "tty"
 	input="$@"
-
 	line=`wc -l ${input} | tail -n1 | sed 's/^[ \t]*//' | cut -d" " -f 1`
-	#echo line ${line}
-
 	if [ ${line} -lt `expr ${row} - ${offset}` ] ; then
 		cat ${input}
 	else
