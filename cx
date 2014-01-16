@@ -20,6 +20,17 @@ eval cc ${opt} -lm -xc -o ${out_file} <( cat << EOT
 	#include <stdlib.h>
 	#include <math.h>
 
+	#define p printf
+	#define pd(n) printf("%d\n", n);
+	#define pf(n) printf("%f\n", n);
+	#define px(n) printf("%x\n", n);
+	#define pa(n) printf("%a\n", n);
+	#define pp(n) printf("%p\n", n);
+
+	#define fori(n) int i; for(i=0; i<n; i++)
+	#define forj(n) int j; for(j=0; j<n; j++)
+	#define fork(n) int k; for(k=0; k<n; k++)
+
 	typedef unsigned char  uchar;
 	typedef unsigned short ushort;
 	typedef unsigned int   uint;
