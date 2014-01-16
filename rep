@@ -1,13 +1,9 @@
 #!/bin/sh
 
 if [ $# -lt 2 ] ; then echo "usage: rep str [str...] count"; exit; fi
+
 eval num=\${$#}
-#echo $#
-#echo $num;exit
-#shift
 
 str=`echo "$*" | sed 's/ [^ ]*$/ /'`
-#echo s${str}e;exit
+
 for i in `seq ${num}`; do echo -n "${str}"; done; echo -e "\b"
-#n=$1; shift; for i in `seq $n`; do echo -n "$@"; done; echo
-#for i in `seq $2`; do s=${s}$1; done; echo ${s}
