@@ -4,21 +4,21 @@ PAGER=less
 
 # wcは最終行に改行がないと1行少なくなる。
 # 次のプロンプトで2行流れる(PROMPTを2段にしている)。
-# 確認のため、当該コマンドを実行したプロンプトも見たいので、+1行。
-offset=3
+# 確認のため、当該コマンドを実行したプロンプトも見たいので、+2行。
+offset=5
 
 row=`stty size < /dev/tty | cut -d" " -f 1`
 
 if [ "`LANG=C tty`" = "not a tty" ] ; then
-	awk -v row=${row} -v pager=${PAGER} '
-	    {l[NR] = $0} END{cmd = NR < row ? "cat" : pager; \
+	awk -v row=${row} -v offset=${offset} -v pager=${PAGER} '
+	    {l[NR] = $0} END{cmd = NR <= row - offset ? "cat" : pager; \
 	    for(i = 1; i <= NR; i++)print l[i] | cmd}'
 elif [ "$#" = "0" ] ; then
 	cat
 else
 	input="$@"
 	line=`wc -l ${input} | tail -n1 | sed 's/^[ \t]*//' | cut -d" " -f 1`
-	if [ ${line} -lt `expr ${row} - ${offset}` ] ; then
+	if [ ${line} -le `expr ${row} - ${offset}` ] ; then
 		cat ${input}
 	else
 		$PAGER ${input}
