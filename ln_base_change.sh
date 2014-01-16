@@ -1,10 +1,14 @@
 #!/bin/sh
+# vim:set sw=2 :
 
-for i in b o d h x ; do
-    for j in b o d h x ; do
-	if [ ${i} != ${j} ] ; then
-	    ln -s ~/bin/base_change.sh ${i}2${j}
-	fi
-    done
+bases="b o d h x"
+
+for i in ${bases} ; do
+  for j in ${bases} ; do
+    if [ ${i} != ${j} ] ; then
+      #rm ${HOME}/bin/${i}2${j}
+      ln -s ${HOME}/bin/base_change.sh ${HOME}/bin/${i}2${j}
+    fi
+  done
 done
-rm h2x x2h
+rm ${HOME}/bin/h2x ${HOME}/bin/x2h
