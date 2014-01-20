@@ -1,7 +1,7 @@
 #!/usr/bin/awk -f
 
 function usage() {
-	print "line2tab : line to table converter."	> "/dev/stderr"
+	print "line2table : line to table converter."	> "/dev/stderr"
 	print ""					> "/dev/stderr"
 
 	print "  Example:"				> "/dev/stderr"
