@@ -1,5 +1,33 @@
 #!/usr/bin/awk -f
+
+function usage() {
+	print "line2tab : line to table converter."	> "/dev/stderr"
+	print ""					> "/dev/stderr"
+
+	print "  Example:"				> "/dev/stderr"
+	print ""					> "/dev/stderr"
+	print "    <input>"				> "/dev/stderr"
+	print "        a x 1"				> "/dev/stderr"
+	print "        a y 2"				> "/dev/stderr"
+	print "        a z 3"				> "/dev/stderr"
+	print "        b x 4"				> "/dev/stderr"
+	print "        b y 5"				> "/dev/stderr"
+	print "        b z 6"				> "/dev/stderr"
+	print ""					> "/dev/stderr"
+	print "    <output>"				> "/dev/stderr"
+	print "        #       x       y       z"	> "/dev/stderr"
+	print "        a       1       2       3"	> "/dev/stderr"
+	print "        b       4       5       6"	> "/dev/stderr"
+	print ""					> "/dev/stderr"
+
+	exit 0
+}
+
 BEGIN {
+	if (ARGV[1] == "-h") {
+		usage()
+	}
+
 	col_title_set = 0
 	num_key = 0
 	num_col = 0
@@ -32,6 +60,8 @@ prev_key != $1 {
 }
 
 END {
+	if (! NR) exit 0;
+
 	OFS = (FS == " " ? "\t" : FS)
 	ORS = ""
 
