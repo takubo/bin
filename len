@@ -1,0 +1,10 @@
+#!/bin/sh
+#src='BEGIN{print length("'"$@"'")}'
+#awk "${src}"
+#awk "BEGIN{print length(\"""$*""\")}"
+#awk 'BEGIN{print length("'"$*"'")}'
+if [ $# = 0 ]; then
+    read s; echo -n $s | wc -m
+else
+    echo -n "$@" | wc -m
+fi
