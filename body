@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]; then
+  echo 'sep: not specifield line number.' > /dev/stderr
+  exit 2
+fi
+
+line=$1
+shift
+sed -n "${line}p" "$@"
