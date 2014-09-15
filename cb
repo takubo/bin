@@ -1,0 +1,3 @@
+#!/bin/sh
+#eval echo "' scale=3; $@ '" | bc
+eval echo "' $@ '" | bc
