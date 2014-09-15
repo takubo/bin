@@ -11,7 +11,7 @@ FNR == 1{
 	next
 }
 
-{
+! /^$/ {
 	if (NF != col_num)
 		printf "Warnig: Irregular NF. FILENAME=\"%s\" FNR=%d\n",
 			FILENAME, FNR > "/dev/stderr"
