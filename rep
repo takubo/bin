@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ $# -lt 2 ] ; then echo "usage: rep str [str...] count"; exit; fi
+if [ $# -lt 2 ] ; then echo "usage: rep str [str...] count" > /dev/stderr ; exit 1; fi
 
 eval num=\${$#}
 
