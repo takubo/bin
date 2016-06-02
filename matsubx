@@ -1,0 +1,65 @@
+#!/usr/bin/gawk -f
+
+BEGIN {
+	if (ARGC < 3) {
+		print "matsubx : error : number of arguments is not 3." > "/dev/stderr"
+		exit error = 1
+	}
+	PROCINFO["sorted_in"] = "@ind_num_asc"
+	cellrow = 0
+	capture = 0
+}
+
+FILENAME == ARGV[1] && $0 != "" && $0 !~ /^[ \t]*#/ {
+	for (i = 1; i <= NF; i++)
+		cell[cellrow, i] = $i
+
+	if (FNR == 1) {
+		cellcol = NF
+	} else if (NF != cellcol) {
+		print "matsubx : error : number of collumn is not", cellcol ". FNR =", FNR > "/dev/stderr"
+		exit error = 2
+	}
+
+	cellrow++
+	next
+}
+
+/^%}$/ {
+	printline()
+	nextline
+}
+
+capture {
+	line[FNR] = $0
+}
+
+/^%{$/ {
+	capture = 1
+}
+
+!capture
+
+ENDFILE {
+	if (capture) printline()
+}
+
+END {
+	if (error)
+		exit error
+}
+
+function printline(   i, j, k) {
+	for (i = 1; i < cellrow; i++)
+		#for (j = 1; j <= FNR; j++) {
+		for (j in line) {
+			$0 = line[j]
+			for (k = 1; k <= cellcol; k++)
+				gsub(cell[0, k], cell[i, k])
+			print
+		}
+
+	delete line
+	capture = 0
+}
+
