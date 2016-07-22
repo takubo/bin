@@ -57,8 +57,9 @@ else
 fi
 
 # TODO
+#
 # 桁指定
-#	zero or sign
+#	zero extension or signed extension
 #
 # ビット番号表示
 #
@@ -67,4 +68,6 @@ fi
 # Pack Unpack
 #
 # エンディアン逆転
+#
+# 大文字小文字の指定	16進
 #
