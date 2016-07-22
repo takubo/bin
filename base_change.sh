@@ -3,14 +3,15 @@
 
 LOWER_UPPER='abcdef'
 
-while getopts 'f:chsuU' OPT; do
+while getopts 'f:ChsuUz:' OPT; do
 	case ${OPT} in
-		c)  C_STYLE=1 ;;
+		C)  C_STYLE=1 ;;
 		f)  FROM_FILE="${OPTARG}" ;;
 		h)  usage_exit ;;
 		s)  FROM_FILE="/dev/stdin" ;;
 		u)  LOWER_UPPER='abcdef' ;;
 		U)  LOWER_UPPER='ABCDEF' ;;
+		z)  DIGIT="${OPTARG}" ;;	# zero extension
 		?) usage_exit ;;
 	esac
 done
@@ -23,7 +24,7 @@ case ${ichar} in
 	o)   ibase=8 ;;
 	d)   ibase=10 ;;
 	h|x) ibase=16 ;;
-	*) echo "invalid ibase."; exit ;;
+	*)   echo "invalid input-base."; exit ;;
 esac
 
 case ${ochar} in
@@ -31,17 +32,17 @@ case ${ochar} in
 	o)   obase=8 ; if [ "$C_STYLE" ]; then C_STYLE="0";  fi ;;
 	d)   obase=10 ;;
 	h|x) obase=16; if [ "$C_STYLE" ]; then C_STYLE="0x"; fi ;;
-	*) echo "invalid obase."; exit ;;
+	*)   echo "invalid output-base."; exit ;;
 esac
 
 if [ "${FROM_FILE}" = "" ] ; then
 	num=`echo $* | tr 'abcdef \t' 'ABCDEF;;' | tr -d _`
-	echo "obase=${obase}; ibase=${ibase}; ${num}" | bc | tr 'ABCDEF' ${LOWER_UPPER} | sed 's/^/'"${C_STYLE}"'/'
+	echo "obase=${obase}; ibase=${ibase}; ${num}" | bc | tr 'ABCDEF' ${LOWER_UPPER} | xargs -i printf "%${DIGIT}s\n" {} | sed 's/ /0/g; s/^/'"${C_STYLE}"'/'
 else
 	cat "${FROM_FILE}" |
 	while read LINE ; do
 		num=`echo ${LINE} | tr 'abcdef \t' 'ABCDEF;;' | tr -d _`
-		echo "obase=${obase}; ibase=${ibase}; ${num}" | bc | tr 'ABCDEF' ${LOWER_UPPER} | sed 's/^/'"${C_STYLE}"'/'
+		echo "obase=${obase}; ibase=${ibase}; ${num}" | bc | tr 'ABCDEF' ${LOWER_UPPER} | xargs -i printf "%${DIGIT}s\n" {} | sed 's/ /0/g; s/^/'"${C_STYLE}"'/'
 	done
 fi
 
@@ -51,11 +52,6 @@ fi
 #	zero extension or signed extension
 #
 # ビット番号表示
-#
-# ビットフィールドを解析可能に
-# Pack Unpack
-#
-# エンディアン逆転
 #
 
 usage_exit()
