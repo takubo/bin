@@ -3,16 +3,16 @@
 
 LOWER_UPPER='abcdef'
 
-while getopts 'f:ChsuUz:' OPT; do
+while getopts 'f:cChlLsuUz:' OPT; do
 	case ${OPT} in
-		C)  C_STYLE=1 ;;
-		f)  FROM_FILE="${OPTARG}" ;;
-		h)  usage_exit ;;
-		s)  FROM_FILE="/dev/stdin" ;;
-		u)  LOWER_UPPER='abcdef' ;;
-		U)  LOWER_UPPER='ABCDEF' ;;
-		z)  DIGIT="${OPTARG}" ;;	# zero extension
-		?) usage_exit ;;
+		[cC] ) C_STYLE=1 ;;
+		f )    FROM_FILE="${OPTARG}" ;;
+		h )    usage_exit ;;
+		s )    FROM_FILE="/dev/stdin" ;;
+		[lu] ) LOWER_UPPER='abcdef' ;;
+		[LU] ) LOWER_UPPER='ABCDEF' ;;
+		z )    DIGIT="${OPTARG}" ;;	# zero extension
+		? )    usage_exit ;;
 	esac
 done
 shift $(( $OPTIND - 1 ))
