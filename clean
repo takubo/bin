@@ -1,0 +1,5 @@
+#!/bin/sh
+
+seq `stty -a | grep -o 'rows[ \t]\+[0-9]\+;' | sed 's/[^0-9]//g'` | sed -n 'i' 2> /dev/null
+#seq $LINES | xargs -i
+clear
