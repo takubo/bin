@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#/cygdrive/c/Users/${USER}/bin/vim81-kaoriya-win64/gvim -O "$@" &
+#/cygdrive/c/Users/${USER}/bin/vim81-kaoriya-win64/gvim -O --remote-tab-silent "$@" &
+#/cygdrive/c/Users/${USER}/bin/vim81-kaoriya-win64/gvim --serverlist "$@" &
+#echo `/cygdrive/c/Users/${USER}/bin/vim81-kaoriya-win64/vim --serverlist "$@"`
+
+for i in `seq $#`
+do
+	x=`echo ${@:$i:1}`
+	if [ "${x:0:1}" != '-' ] ; then
+		x=`cygpath -w ${x}`
+	fi
+	arg[$i]=$x
+done
+
+if [ \( $# -eq 0 \) -o \( "`/cygdrive/c/Users/${USER}/bin/vim8?-kaoriya-win64/vim --serverlist`" = "" \) ] ; then
+	( /cygdrive/c/Users/${USER}/bin/vim8?-kaoriya-win64/gvim -O "${arg[@]}" 2>&1 >/dev/null | iconv -f cp932 -t utf-8 ) &
+	# ( /cygdrive/c/Users/${USER}/bin/vim8?-kaoriya-win64/gvim -O "$@" | iconv -f cp932 -t utf-8 ) &
+else
+	( /cygdrive/c/Users/${USER}/bin/vim8?-kaoriya-win64/gvim --remote-tab-silent "${arg[@]}" 2>&1 >/dev/null | iconv -f cp932 -t utf-8 ) &
+	# ( /cygdrive/c/Users/${USER}/bin/vim8?-kaoriya-win64/gvim --remote-tab-silent "$@" | iconv -f cp932 -t utf-8 ) &
+fi

@@ -1,0 +1,44 @@
+#!/bin/sh
+
+for i in `seq $#`
+do
+	# echo $i
+	x=`echo ${@:$i:1}`
+	if [ "${x:0:1}" != '-' ] ; then
+		x=`cygpath -w ${x}`
+	fi
+	# arg[$i]=\"$x\"
+	arg[$i]=$x
+	# echo ${arg[$i]}
+done
+
+# IFS=' '
+# echo "${arg[@]}" 
+
+( /cygdrive/c/Users/${USER}/bin/vim8?-kaoriya-win64/gvim -O "${arg[@]}" 2>&1 >/dev/null | iconv -f cp932 -t utf-8 ) &
+#( /cygdrive/c/Users/${USER}/bin/vim8?-kaoriya-win64/gvim -O ${arg_str} | iconv -f cp932 -t utf-8 ) &
+#( /cygdrive/c/Users/${USER}/bin/vim8?-kaoriya-win64/gvim -O "$@" | iconv -f cp932 -t utf-8 ) &
+
+
+
+# TODO
+# "${arg[@]}"の展開結果にスペースが含まれている場合に、'^@'になってしまう対策をする。
+
+
+
+	#x=eval echo $`echo $i`
+		# echo $[x]
+
+
+
+#  arg_str=`echo ${arg[@]}`
+#  echo $arg_str
+#  echo "${arg[@]}"
+
+
+
+#for m in $arg_str
+#do
+#	echo $m
+#done
+#exit
